@@ -24,8 +24,8 @@ def getMappings():
     recips = recips.split(',')
     fwds = fwds.split(',')
     for src, dest in zip(recips, fwds):
-        src = src.replace('"','')
-        dest = dest.replace('"','')
+        src = src.replace('"','').strip()
+        dest = dest.replace('"','').strip()
         mappings.update({src: dest})
     return mappings
 
