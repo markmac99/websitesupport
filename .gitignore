@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+email-forwarder/**
+.terraform*
+*.tfstate*
+*.zip
+*.txt
+testEvent.json
+testme.ps1
