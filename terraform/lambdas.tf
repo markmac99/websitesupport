@@ -32,6 +32,10 @@ resource "aws_lambda_function" "emailfwd" {
   ephemeral_storage {
     size = 512
   }
+  logging_config {
+      log_format = "Text"
+      log_group  = "/aws/lambda/emailForwarderV2"
+    }  
   tags = {
     Name       = "emailForwarderV2"
     billingtag = "MarysWebsite"
