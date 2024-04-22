@@ -17,6 +17,7 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 
+
 def getMappings():
     mappings = {}
     recips = os.getenv('RECIPS')
@@ -94,7 +95,8 @@ def lambda_handler(event, context):
             try:
                 o = ses.send_raw_email(Destinations=[address], RawMessage=dict(Data=msg_string))
                 print('Forwarded email for <{}> to <{}>. SendRawEmail response={}'.format(recipient, address, json.dumps(o)))
-            except ClientError as e: print('Client error while forwarding email for <{}> to <{}>: {}'.format(recipient, address, e))
+            except ClientError as e: 
+                print('Client error while forwarding email for <{}> to <{}>: {}'.format(recipient, address, e))
 
 
 if __name__ == '__main__':

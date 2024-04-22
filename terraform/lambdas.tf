@@ -14,7 +14,7 @@ resource "aws_lambda_function" "emailfwd" {
   filename         = data.archive_file.emailfwdzip.output_path
   source_code_hash = data.archive_file.emailfwdzip.output_base64sha256
   handler          = "emailForwarder.lambda_handler"
-  runtime          = "python3.8"
+  runtime          = "python3.11"
   memory_size      = 128
   timeout          = 250
   role             = "arn:aws:iam::317976261112:role/lambda-s3-full-access-role"
