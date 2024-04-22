@@ -50,3 +50,12 @@ resource "aws_lambda_permission" "allow_ses" {
   principal     = "ses.amazonaws.com"
 }
 
+resource "aws_cloudwatch_log_group" "emailforwarderv2" {
+  provider      = aws.euw1-prov
+  name = "/aws/lambda/emailForwarderV2"
+  retention_in_days = 30
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+  }
+}
