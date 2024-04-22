@@ -2,6 +2,21 @@
 
 # create the webserver
 
+data "aws_vpc" "main" {
+    id = "vpc-a19015c8"
+}
+data "aws_subnet" "subnet2" {
+  filter {
+    name   = "tag:Name"
+    values = ["Subnet2"]
+  }
+}
+
+data "aws_key_pair" "marks_key" {
+  key_name           = "markskey"
+}
+
+
 resource "aws_instance" "webserver" {
   ami                  = "ami-0beb9a0562a969e9f"
   instance_type        = "t3a.small"
@@ -20,15 +35,25 @@ resource "aws_instance" "webserver" {
     iops = 3000
     encrypted = false
   }
-
   tags = {
     "Name"       = "newWebserver"
     "billingtag" = "MarysWebsite"
   }
 }
 
-data "aws_key_pair" "marks_key" {
-  key_name           = "markskey"
+resource "aws_network_interface" "webserver_nic" {
+  subnet_id   = data.aws_subnet.subnet2.id
+  ipv6_address_list_enabled = false
+  private_ip_list_enabled   = false
+  tags = {
+    billingtag = "MarysWebsite"
+  }
+}
+
+resource "aws_network_interface_attachment" "webserver" {
+  instance_id          = aws_instance.webserver.id
+  network_interface_id = aws_network_interface.webserver_nic.id
+  device_index         = 0
 }
 
 resource "aws_eip" "webserverip" {
@@ -41,10 +66,6 @@ resource "aws_eip" "webserverip" {
 
 data "aws_iam_instance_profile" "s3fullaccess" {
     name = "S3FullAccess"
-}
-
-data "aws_vpc" "main" {
-    id = "vpc-a19015c8"
 }
 
 resource "aws_security_group" "webserver_sg" {
